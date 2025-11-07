@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { nanoid } from "nanoid";
 
 // initialise express
 const app = express();
@@ -28,7 +29,8 @@ app.post("/shorten", (req, res) => {
     return res.status(400).json({ error: "URL fehlt" });
   }
 
-  const short = Math.random().toString(36).substring(2, 8); // Zeichen von Index 2 bis 7
+  // const short = Math.random().toString(36).substring(2, 8); // Zeichen von Index 2 bis 7
+  const short = nanoid(6);
   shortLinks[short] = url;
 
   res.json({ shortLink: short, originalUrl: url });
