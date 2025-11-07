@@ -1,6 +1,9 @@
 import React from "react";
-import "./App.css";
 import { useEffect } from "react";
+import { Button, TextField, Box, Typography } from "@mui/material";
+
+import "./App.css";
+import { createShortLink } from "./api/shortener";
 
 export interface SampleContent {
   title: string;
@@ -9,6 +12,25 @@ export interface SampleContent {
 
 function App() {
   const [array, setArray] = React.useState<SampleContent[]>([]);
+
+  const [url, setUrl] = React.useState("");
+  const [shortLink, setShortLink] = React.useState("");
+  const [status, setStatus] = React.useState("");
+
+  const handleShorten = async (): Promise<void> => {
+    if (!url) {
+      setStatus("Bitte gib eine URL ein.");
+      return;
+    }
+
+    try {
+      const data = await createShortLink(url);
+      setShortLink(`http://localhost:8080/${data.shortLink}`);
+      setStatus("Kurzlink erstellt ✅");
+    } catch (error) {
+      setStatus("Fehler: " + (error as Error).message);
+    }
+  };
 
   const fetchData = async (): Promise<void> => {
     const response = await fetch("http://localhost:8080"); // Backend-Endpunkt
@@ -27,14 +49,50 @@ function App() {
 
   return (
     <main>
-      <div className="box">
+      <Typography variant="h4" gutterBottom>
+        URL Shortener
+      </Typography>
+
+      <Box className="box">
+        <TextField
+          label="Gib eine URL ein"
+          variant="outlined"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          fullWidth
+          sx={{ maxWidth: 400, mb: 2 }}
+        />
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleShorten}
+          sx={{ mb: 2 }}
+        >
+          Kurzlink erstellen
+        </Button>
+
+        {status && <Typography>{status}</Typography>}
+        {shortLink && (
+          <Typography>
+            <p>
+              Dein Kurzlink:{" "}
+              <a href={shortLink} target="_blank">
+                {shortLink}
+              </a>
+            </p>
+          </Typography>
+        )}
         {array.map((sampleContent, index) => (
           <section key={index}>
-            <h1>{sampleContent.title}</h1>
-            <p>{sampleContent.content}</p>
+            <hr />
+            <p>
+              <b>{sampleContent.title}: </b>
+              {sampleContent.content}
+            </p>
           </section>
         ))}
-      </div>
+      </Box>
     </main>
   );
 }
