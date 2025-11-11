@@ -22,7 +22,6 @@ function App() {
       setStatus("Bitte gib Du hast da was vergessen ☝️🫤");
       return;
     }
-
     try {
       const data = await createShortLink(url);
       setShortLink(`http://localhost:8080/${data.shortLink}`);
@@ -33,12 +32,10 @@ function App() {
   };
 
   const fetchData = async (): Promise<void> => {
-    const response = await fetch("http://localhost:8080"); // Backend-Endpunkt
-
+    const response = await fetch("http://localhost:8080");
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw new Error(`HTTP error! Status: ${response.status}`); 
     }
-
     const data = await response.json();
     setArray([{ title: "Status", content: data.message }]);
   };
@@ -75,21 +72,18 @@ function App() {
         {status && <Typography>{status}</Typography>}
         {shortLink && (
           <Typography>
-            <p>
-              Dein Kurzlink:{" "}
-              <a href={shortLink} target="_blank">
-                {shortLink}
-              </a>
-            </p>
+            <br />
+            Dein Kurzlink:{" "}
+            <a href={shortLink} target="_blank">
+              {shortLink}
+            </a>
           </Typography>
         )}
         {array.map((sampleContent, index) => (
           <section key={index}>
             <hr />
-            <p>
-              <b>{sampleContent.title}: </b>
-              {sampleContent.content}
-            </p>
+            <b>{sampleContent.title}: </b>
+            {sampleContent.content}
           </section>
         ))}
       </Box>
