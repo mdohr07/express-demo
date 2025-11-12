@@ -19,7 +19,7 @@ function App() {
 
   const handleShorten = async (): Promise<void> => {
     if (!url) {
-      setStatus("Bitte gib Du hast da was vergessen ☝️🫤");
+      setStatus("Du hast da was vergessen ☝️🫤");
       return;
     }
 
