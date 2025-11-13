@@ -8,7 +8,7 @@ app.use(cors({ origin: ["http://localhost:5173"] })); // cors is now gonna allow
 /* ℹ️ cors is like a bridge between frontend & backend.
  *  With it requests can be sent between the two different ports.
  */
-app.use(express.json());
+app.use(express.json()); // Damit Express automatisch JSON im Request-Body lesen und in ein JavaScript-Objekt umwandeln kann.
 
 /*
  * Record<K, V> ist ein TypeScript-Typ, der sagt:
